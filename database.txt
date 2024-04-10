@@ -1,0 +1,41 @@
+database:medBazzar
+categories
+----------
+categoriesid int pk ai
+categoriesname varchar(100)
+categoryicon text
+
+brands
+------
+brandsid int pk ai
+brandsname varchar(100)
+brandicon text
+
+subcategories
+-------------
+subcategoryid int pk ai
+categoryid fk int 
+subcategoryname varchar(100)
+subcategoryicon text
+
+products
+--------
+categoryid fk DD
+subcategoryid fk DD
+brandid fk DD
+productid pk ai int
+productname varchar(100)
+descripton text
+picture text
+
+banners
+--------
+bannerid pk ai
+bannertype DD 
+              General
+              brand
+              trending
+              latest
+              popular
+brandid DD (none)
+pictures
