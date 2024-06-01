@@ -3,6 +3,7 @@ import { useState } from 'react';
 import OtpInput from 'react-otp-input';
 import { useNavigate } from "react-router-dom";
 import LoginOTP from './LoginOTP';
+import { useDispatch } from 'react-redux';
 
 export default function GetOTP(props){
     
@@ -10,9 +11,13 @@ export default function GetOTP(props){
     const [otp, setOtp] = useState('')
     const [status, setStatus] = useState(true) // false means not submitted yet. true means otp has been sent 
     const [valid, setValid] = useState(false)  // Valid OTP or not
+
+    var dispatch=useDispatch()
+
     const handleVerifyOtp=()=>{
         if(otp==props.otp){
-        navigate('/cart',{status:true})}
+        dispatch({type:'ADD_USER',payload:[props?.mobileno,props?.userData]})
+        navigate('/cart')}
         else{
             alert('Invalid OTP')
         }

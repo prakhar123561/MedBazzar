@@ -5,12 +5,15 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import LoginOTP from './LoginOTP';
 import OtpInput from 'react-otp-input';
 import {useNavigate} from 'react-router-dom'
+import { useDispatch } from "react-redux";
 import { postData } from "../../services/fetchNodeServices";
 import Cart from "../../screens/userinterface/Cart";
+import Swal from "sweetalert2";
 
 export function LoginDetails(props){
 
     var navigate = useNavigate()
+    var dispatch=useDispatch()
 
     const theme = useTheme()
     const matchesMd = useMediaQuery(theme.breakpoints.down('md'))
@@ -26,10 +29,19 @@ export function LoginDetails(props){
 
     const handleSubmit = async() =>{
         if(otp==props.otp){
-            const result = await postData('users/submit_user',{mobileno:mobileno, emailid:emailId, username: (userFirstName+ " "+userLastName)})
+            var body={mobileno:props.mobileno,emailid:emailId,username:(userFirstName+" "+userLastName)}
+            const result = await postData('users/submit_user',body)
             if(result.status){
-            alert(result.message)
-            navigate('/cart',status)
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "You are registered now...",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast:true
+                  });
+            dispatch({type:'ADD_USER',payload:[mobileno,body]})
+            navigate('/cart')
             }
             else{
                 alert("Invalid OTP")

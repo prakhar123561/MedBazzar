@@ -9,10 +9,12 @@ import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {Skeleton} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function CategoryComponent(props){
     const sld = createRef()
     const theme = useTheme()
+    const navigate = useNavigate()
     const matchesMd = useMediaQuery(theme.breakpoints.down('md'))
     const matchesSm = useMediaQuery(theme.breakpoints.down('sm'))
     const matchesXs = useMediaQuery(theme.breakpoints.down('xs'))
@@ -28,6 +30,10 @@ export default function CategoryComponent(props){
 
     var category = props?.data || []
 
+    const handleGotoFilterPage=(item)=>{
+        navigate('/filter/null',{state:{categoryid:item.categoryid,categoryname:item.categoryname}})
+    }
+
     const showCategorySlideShimmer = () =>{
         return ["", "", "", "", "", "", ""]?.map((item) => {
             return (
@@ -42,7 +48,7 @@ export default function CategoryComponent(props){
     const showImages = (item) =>{
         var images = item.picture.split(',')
         return images?.map((image)=>{
-        return <div>
+        return <div onClick={()=>handleGotoFilterPage(item)} style={{cursor:'pointer'}}>
             
                <div style={{marginLeft:3,marginRight:3,width:"100%",display:'block',borderRadius:10}}>
                 <img src={`${serverUrl}/images/${image}`} 
@@ -53,6 +59,7 @@ export default function CategoryComponent(props){
                 marginLeft:'auto',
                 marginRight:'auto',
                 background:'#e7eaee'}}
+                
             /></div>
                 
         </div>

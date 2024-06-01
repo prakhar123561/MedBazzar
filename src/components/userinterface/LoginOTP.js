@@ -19,6 +19,7 @@ export default function LoginOTP(){
     const [mobileno, setMobileno] = useState('')
     const [valid, setValid] = useState(false)
     const [userStatus, setUserStatus] = useState(true)
+    const [userData,setUserData]=useState([])
 
     const generateOTP = () =>{
         var myotp = parseInt(Math.random()*8999)+1000; //generate a random  4 digit OTP number between 1000 and 2799
@@ -37,6 +38,7 @@ export default function LoginOTP(){
             generateOTP()
             setStatus(!status)
             setUserStatus(true)
+            setUserData(result.data)
         }
     }
 
@@ -73,7 +75,7 @@ export default function LoginOTP(){
 
             </Grid>
         </Grid>
-        </Paper>:userStatus==true?<GetOTP mobileno={mobileno} otp={otp}/>:<LoginDetails mobileno={mobileno} otp={otp}/>
+        </Paper>:userStatus==true?<GetOTP mobileno={mobileno} otp={otp} userData={userData}/>:<LoginDetails mobileno={mobileno} otp={otp}/>
     )
 
 

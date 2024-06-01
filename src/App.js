@@ -9,6 +9,8 @@ import Cart from "./screens/userinterface/Cart";
 import PlusMinusComponent from "./components/userinterface/PlusMinusComponent";
 import LogInScreen from "./screens/userinterface/LogInScreen"
 import { LoginDetails } from "./components/userinterface/LoginDetails";
+import AddAddress from "./components/userinterface/AddAddress";
+import FilterPage from "./screens/userinterface/FillterPage";
 
 function App() {
   return (
@@ -23,7 +25,9 @@ function App() {
           <Route element={<PaymentDetails/>} path={"/paymentdetails"}/>
           <Route element={<Cart/>} path={"/cart"}/>
           <Route element={<PlusMinusComponent/>} path="/plusminuscomponent"/>
-          <Route element={<LogInScreen/>} path="/login"/>
+          <Route element={<LogInScreen/>} path={"/login"}/>
+          <Route element={<AddAddress/>} path={"/address"}/>
+          <Route element={<FilterPage/>} path={"/filter/:pattern"}/>
         </Routes>
       </Router>
     </div>

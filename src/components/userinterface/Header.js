@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AppBar, Box, Toolbar } from "@mui/material";
+import { AppBar, Box, Toolbar, Avatar } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { useStyles } from "../../screens/userinterface/HomeCss";
 import { useSelector} from "react-redux";
 import ShowCartProducts from "./ShowCartProducts";
+import { deepOrange } from '@mui/material/colors';
 
 export default function Header(props)
 {
@@ -29,11 +30,25 @@ export default function Header(props)
   const navigate = useNavigate()
   var classes = useStyles()
   var products = useSelector((state)=>state.data)
+  var user=useSelector((state)=>state.user)
   var keys = Object?.keys(products)
+
+  var userData=''
+  var userInformation={}
+  try{
+  userData=Object.values(user)[0].username.split(' ')
+  userData=userData[0]
+
+  userInformation=Object.values(user)[0]
+  
+  }catch(e){ }
+  var name1 = userInformation?.username?.charAt(0).toUpperCase()
+
 
   console.log('count:',keys?.length)
   const [status, setStatus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [pattern, setPattern] = useState('')
 
   const handleDrawer = () =>{
     setStatus(true)
@@ -51,14 +66,24 @@ export default function Header(props)
     setIsOpen(false)
   }
 
+  const handleLogin = () =>{
+    setStatus(true)
+    navigate('/login')
+  }
+   
+  const handleFilterPage = ()=>{
+    navigate(`/filter/${pattern}`)
+  }
+
   const drawerList = () =>{
     return(
       <Paper>
       <div className={classes.leftBarStyle}>
-          <img src={`${serverUrl}/images/icon1.png`} style={{background: 'linear-gradient(to right bottom, #36EAEF, #6B0AC9)',width:60,height:60,borderRadius:50,padding:10}}/>
-          <div className={classes.nameStyle}>{'alice'}</div>
-          <div className={classes.emailStyle}>{'alice@gmail.com'}</div>
-          <div className={classes.phoneStyle}>{'+919098276799'}</div>
+          {/* <img src={`${serverUrl}/images/icon1.png`} style={{background: 'linear-gradient(to right bottom, #36EAEF, #6B0AC9)',width:60,height:60,borderRadius:50,padding:10}}/> */}
+          <Avatar sx={{ bgcolor: deepOrange[500] }}>{name1}</Avatar>
+          <div className={classes.nameStyle}>{userInformation?.username}</div>
+          <div className={classes.emailStyle}>{userInformation?.emailid}</div>
+          <div className={classes.phoneStyle}>+91 {userInformation?.mobileno}</div>
       </div>
       <div>
       <List >
@@ -169,11 +194,14 @@ export default function Header(props)
               {searchBarComponent()}
             </div>
             <div style={{color:'#000', width: 70, display:'flex', justifyContent: 'space-between'}}>
-              
-              <PersonOutlineOutlinedIcon style={{fontSize:30,color:'#000'}}/>
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+
+              <PersonOutlineOutlinedIcon style={{fontSize:30,color:'#000'}} onClick={handleLogin}/>
+              <div style={{fontSize:'1.7vw', fontWeight:'bolder',color:'#000'}}>{userData}</div>
+              </div>
               <PhoneOutlinedIcon style={{fontSize:30,color:'#000'}}/>
-            </div>
-          
+            
+          </div>
         </Toolbar>
       </AppBar>
     </Box>)
@@ -188,9 +216,10 @@ export default function Header(props)
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search Products Here.."
           inputProps={{ 'aria-label': 'Search Products Here..' }}
+          onChange={(e)=>setPattern(e.target.value)}
         />
         <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-          <SearchIcon />
+          <SearchIcon onClick={handleFilterPage} />
         </IconButton>
         
       </Paper>
@@ -205,9 +234,11 @@ export default function Header(props)
             <div >
               {!matches?searchBarComponent():<div></div>}
             </div>
-            <div style={{color:'#000', width: !matches? 110: 50, display:'flex', justifyContent: 'space-between'}}>
+            <div style={{color:'#000', width: !matches? 130: 50, display:'flex', justifyContent: 'space-between'}}>
               
-              {!matches?<PersonOutlineOutlinedIcon style={{fontSize:30,color:'#000'}}/>:<div></div>}
+              {!matches?<div style={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+              <PersonOutlineOutlinedIcon style={{fontSize:30,color:'#000',cursor:"pointer"}} onClick={handleLogin}/>
+              <div style={{fontSize:'0.9vw', fontWeight:'bolder',color:'#000'}}>{userData}</div></div>:<div></div>}
               <Badge badgeContent={keys?.length} color="success">
               <ShoppingCartOutlinedIcon style={{fontSize:30,color:'#000',cursor:'pointer'}} onMouseOver={showCartDetails}/>
 
