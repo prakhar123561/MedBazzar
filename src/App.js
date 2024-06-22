@@ -11,6 +11,8 @@ import LogInScreen from "./screens/userinterface/LogInScreen"
 import { LoginDetails } from "./components/userinterface/LoginDetails";
 import AddAddress from "./components/userinterface/AddAddress";
 import FilterPage from "./screens/userinterface/FillterPage";
+import DeliveryAddress from "./components/userinterface/DeliveryAddress";
+import ShowOrders from "./screens/userinterface/ShowOrders";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route element={<LogInScreen/>} path={"/login"}/>
           <Route element={<AddAddress/>} path={"/address"}/>
           <Route element={<FilterPage/>} path={"/filter/:pattern"}/>
+          <Route element={<DeliveryAddress/>} path={"/address"}/>
+          <Route element={<ShowOrders/>} path={"/orders"}/>
         </Routes>
       </Router>
     </div>

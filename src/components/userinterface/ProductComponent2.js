@@ -17,7 +17,7 @@ import PlusMinusComponent from "./PlusMinusComponent";
 import { useDispatch, useSelector } from "react-redux";
 
 
-export default function ProductComponent(props){
+export default function ProductComponent2(props){
     const sld = createRef()
     const navigate = useNavigate()
     const theme = useTheme()

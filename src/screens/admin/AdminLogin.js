@@ -35,7 +35,7 @@ export default function AdminLogin() {
   const [emailid, setEmailid] = useState('abc123@gmail.com')
   const [password, setPassword] = useState('123456')
   const navigate = useNavigate()
-
+//
   const handleClick = async() =>{
     var result = await postData('admin/check_admin_login',{emailid,password})
     if(result.status){

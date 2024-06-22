@@ -47,7 +47,7 @@ export default function PaymentDetails(props) {
         image: medbazzar1,
         handler: function (response) {
             generateOrder(response.razorpay_payment_id)
-            alert(response.razorpay_payment_id);
+            // alert(response.razorpay_payment_id);
         },
         prefill: {
             name: props?.userData?.username,
@@ -62,11 +62,13 @@ export default function PaymentDetails(props) {
             hide_topbar: false,
         },
     };
+    
 
     const openPayModal = () => {
         var rzp1 = new window.Razorpay(options);
         rzp1.open();
     };
+    
     useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -113,11 +115,11 @@ export default function PaymentDetails(props) {
                                         <Typography component="p" style={{ fontSize: 14, fontWeight: 400 }}>Amount Paid</Typography>
                                         <InfoIcon sx={{ fontSize: 14, fill: 'rgb(100, 116, 139)' }} />
                                     </Typography>
-                                    <Typography component="p" style={{ fontSize: 12, fontWeight: 600, color: '#00522b' }}>&#x20B9;{amountpaid}.0</Typography>
+                                    <Typography component="p" style={{ fontSize: 12, fontWeight: 600, color: '#00522b' }}>&#x20B9;{amountpaid}0</Typography>
                                 </Typography>
                                 <Typography component="div" style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: 12 }}>
                                     <Typography component="p" style={{ fontSize: 14, fontWeight: 400 }}>Saving</Typography>
-                                    <Typography component="p" style={{ fontSize: 12, fontWeight: 600, color: '#00522b' }}>&#x20B9;{save}.00</Typography>
+                                    <Typography component="p" style={{ fontSize: 12, fontWeight: 600, color: '#00522b' }}>&#x20B9;{save}</Typography>
                                 </Typography>
                             </Typography>
                             <Typography component="div" style={{ background: '#fff212', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 8, borderRadius: 5 }}>
@@ -172,7 +174,7 @@ export default function PaymentDetails(props) {
                                         <Typography component="h2" style={{ fontSize: 12, fontWeight: 600 }}>&#x20B9;{amountpaid}.00</Typography>
                                     </Typography>
                                     <Typography component="div">
-                                        <Button style={{ background: "#00391c", fontWeight: 'bold', color: '#fff', padding: "10px 38px", fontSize: 12 }} onClick={handleLogin}>{caption}</Button>
+                                        <Button style={{ background: "#00391c", fontWeight: 'bold', color: '#fff', padding: "10px 38px", fontSize: 12, width:'100%', height:'50px' }} onClick={handleLogin}>{caption}</Button>
                                     </Typography>
                                 </Typography>
                             </Typography>

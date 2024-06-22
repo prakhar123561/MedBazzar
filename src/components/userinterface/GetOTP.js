@@ -4,6 +4,7 @@ import OtpInput from 'react-otp-input';
 import { useNavigate } from "react-router-dom";
 import LoginOTP from './LoginOTP';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 
 export default function GetOTP(props){
     
@@ -17,11 +18,21 @@ export default function GetOTP(props){
     const handleVerifyOtp=()=>{
         if(otp==props.otp){
         dispatch({type:'ADD_USER',payload:[props?.mobileno,props?.userData]})
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Login Successfully",
+            showConfirmButton: true,
+            timer: 1500,
+            toast:true
+          });
         navigate('/cart')}
         else{
             alert('Invalid OTP')
         }
     }
+
+    
 
     
     

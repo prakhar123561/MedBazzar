@@ -14,13 +14,13 @@ export default function LoginScreen(){
     const matchesXs = useMediaQuery(theme.breakpoints.down('xs'))
 
     return(
-        <Grid container spacing={2} style={{padding:40}}>
+        <Grid container spacing={1} style={{padding:0, marginLeft: matchesMd? 80: 0, marginTop: matchesMd? 20 :0, width: matchesMd ? '100%':'98%', display:'flex', justifyContent:'center', alignItems:'center'}}>
             
             <Grid item xs={12} style={{display:'flex', flexDirection:'row', alignItems:'flex-end' }}>
             {matchesMd?<div></div>:<Grid item xs={6} style={{marginBottom:80}}>
                 {<LoginImage/>}
             </Grid>}
-            <Grid item xs={matchesMd?12:6} >
+            <Grid item xs={matchesMd?12:6}>
               {<LoginOTP/>}
             </Grid>
             </Grid>

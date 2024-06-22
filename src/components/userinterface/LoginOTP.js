@@ -6,6 +6,9 @@ import OtpInput from 'react-otp-input';
 import GetOTP from "./GetOTP";
 import {postData} from '../../services/fetchNodeServices'
 import { LoginDetails } from "./LoginDetails";
+import ShowOrders from "../../screens/userinterface/ShowOrders";
+import Swal from 'sweetalert2';
+
 
 export default function LoginOTP(){
 
@@ -20,6 +23,7 @@ export default function LoginOTP(){
     const [valid, setValid] = useState(false)
     const [userStatus, setUserStatus] = useState(true)
     const [userData,setUserData]=useState([])
+    
 
     const generateOTP = () =>{
         var myotp = parseInt(Math.random()*8999)+1000; //generate a random  4 digit OTP number between 1000 and 2799
@@ -33,12 +37,30 @@ export default function LoginOTP(){
             generateOTP()
             setStatus(!status)
             setUserStatus(false)
+
+            Swal.fire({
+                icon: 'error',
+                toast: true,
+                title: result.message,
+                timer: 1500,
+                position: 'top-end'
+              })
         }
         else{
+            localStorage.setItem("ADMIN",JSON.stringify(result.data))
+
             generateOTP()
             setStatus(!status)
             setUserStatus(true)
             setUserData(result.data)
+
+      Swal.fire({
+        icon: 'success',
+        toast: true,
+        title: result.message,
+        timer: 1500,
+        position: 'top-end'
+      })
         }
     }
 

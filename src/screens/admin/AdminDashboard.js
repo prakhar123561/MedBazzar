@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { serverUrl } from "../../services/fetchNodeServices";
 import DisplayAllBanner from "./DisplayAllBanner";
 import Concern from "./Concern";
+import Chart from "./Chart";
 
 export default function AdminDashboard(){
     var classes = useStyles()
@@ -48,7 +49,7 @@ export default function AdminDashboard(){
                     <List >
                         <Divider/>
                         <ListItem disablePadding>
-                            <ListItemButton>
+                            <ListItemButton onClick={()=>navigate('/admindashboard/chart')}>
                                 <ListItemIcon>
                                     <DashboardIcon/>
                                 </ListItemIcon>
@@ -156,6 +157,7 @@ export default function AdminDashboard(){
                     <Route element={<Banners/>} path={"/banner"}/>
                     <Route element={<DisplayAllBanner/>} path={"/displayallbanner"}/>
                     <Route element={<Concern/>} path={"/concern"}/>
+                    <Route element={<Chart/>} path={"/chart"}/>
                 </Routes>
             </Grid>
         </Grid> 

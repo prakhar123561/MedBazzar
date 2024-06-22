@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AppBar, Box, Toolbar, Avatar } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
@@ -22,6 +22,14 @@ import { useStyles } from "../../screens/userinterface/HomeCss";
 import { useSelector} from "react-redux";
 import ShowCartProducts from "./ShowCartProducts";
 import { deepOrange } from '@mui/material/colors';
+import ShowUser from "./ShowUser";
+import LoginIcon from '@mui/icons-material/Login';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+import { postData } from "../../services/fetchNodeServices";
+import LogoutIcon from '@mui/icons-material/Logout';
+
 
 export default function Header(props)
 {
@@ -32,7 +40,7 @@ export default function Header(props)
   var products = useSelector((state)=>state.data)
   var user=useSelector((state)=>state.user)
   var keys = Object?.keys(products)
-
+ 
   var userData=''
   var userInformation={}
   try{
@@ -44,12 +52,29 @@ export default function Header(props)
   }catch(e){ }
   var name1 = userInformation?.username?.charAt(0).toUpperCase()
 
-
-  console.log('count:',keys?.length)
+  const num = Object?.values?.(user)[0]
+  console.log(num)
   const [status, setStatus] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [isOpenUser, setIsOpenUser] = useState(false)
   const [pattern, setPattern] = useState('')
+  const [userStatus, setUserStatus] = useState(false)
 
+  const checkUser = async() =>{
+    var result = await postData('users/check_userdata',{mobileno:userInformation?.mobileno})
+    if(result.status){
+      setUserStatus(true)
+    }
+    else{
+      setUserStatus(false)
+    }
+}
+
+console.log(userInformation?.mobileno)
+useEffect(function(){
+   checkUser()
+});
+console.log('usersatus',userStatus)
   const handleDrawer = () =>{
     setStatus(true)
   }
@@ -58,8 +83,19 @@ export default function Header(props)
     setStatus(false)
   }
 
+  const showUserDetails =() =>{
+    setIsOpen(false)
+    setIsOpenUser(true)
+  }
+
+  const hideUserDetails =() =>{
+    setIsOpenUser(false)
+    
+  }
+
   const showCartDetails = () =>{
     setIsOpen(true)
+    setIsOpenUser(false)
   }
 
   const hideCartDetails = () =>{
@@ -75,6 +111,11 @@ export default function Header(props)
     navigate(`/filter/${pattern}`)
   }
 
+  const handleEnter = (e) =>{
+    if(e.key=='Enter')
+    navigate(`/filter/${e.target.value}`)
+  }
+
   const drawerList = () =>{
     return(
       <Paper>
@@ -88,84 +129,14 @@ export default function Header(props)
       <div>
       <List >
           <Divider/>
-          <ListItem disablePadding>
-              <ListItemButton>
-                  <ListItemIcon>
-                      <DashboardIcon/>
-                  </ListItemIcon>
-              <ListItemText primary="Dashboard" />
-              </ListItemButton>
-          </ListItem>
+          
 
           <ListItem disablePadding>
-              <ListItemButton onClick={()=>navigate('/admindashboard/displayallcategory')}>
+              <ListItemButton onClick={()=>navigate('/orders')}>
                   <ListItemIcon>
-                      <DraftsIcon/>
+                  <ShoppingBagIcon style={{color:'red'}}/>
                   </ListItemIcon>
-              <ListItemText primary="Category List" />
-              </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding>
-              <ListItemButton onClick={()=>navigate('/admindashboard/displayallsubcategory')}>
-                  <ListItemIcon>
-                      <DraftsIcon/>
-                  </ListItemIcon>
-              <ListItemText primary="SubCategory List" />
-              </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding>
-              <ListItemButton onClick={()=>navigate('/admindashboard/displayallbrand')}>
-                  <ListItemIcon>
-                      <DraftsIcon/>
-                  </ListItemIcon>
-              <ListItemText primary="Brand List" />
-              </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding>
-              <ListItemButton onClick={()=>navigate('/admindashboard/displayallproduct')}>
-                  <ListItemIcon>
-                      <DraftsIcon/>
-                  </ListItemIcon>
-              <ListItemText primary="Product List" />
-              </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding>
-              <ListItemButton onClick={()=>navigate('/admindashboard/displayallproductdetail')}>
-                  <ListItemIcon>
-                      <DraftsIcon/>
-                  </ListItemIcon>
-              <ListItemText primary="Product Details List" />
-              </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding>
-              <ListItemButton onClick={()=>navigate('/admindashboard/displayallbanner')}>
-                  <ListItemIcon>
-                      <DraftsIcon/>
-                  </ListItemIcon>
-              <ListItemText primary="Banners" />
-              </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding>
-              <ListItemButton onClick={()=>navigate('/admindashboard/concern')}>
-                  <ListItemIcon>
-                      <DraftsIcon/>
-                  </ListItemIcon>
-              <ListItemText primary="Concern" />
-              </ListItemButton>
-          </ListItem>
-
-          <ListItem disablePadding>
-              <ListItemButton>
-                  <ListItemIcon>
-                      <DraftsIcon/>
-                  </ListItemIcon>
-              <ListItemText primary="Sales Report" />
+              <ListItemText primary="My Order" />
               </ListItemButton>
           </ListItem>
           <Divider/>
@@ -173,9 +144,30 @@ export default function Header(props)
           <ListItem disablePadding>
               <ListItemButton>
                   <ListItemIcon>
-                      <DraftsIcon/>
+                  <ListAltIcon style={{color:'#00391c'}}/>
                   </ListItemIcon>
-              <ListItemText primary="Logout" />
+              <ListItemText primary="My Wishlist" />
+              </ListItemButton>
+          </ListItem>
+          <Divider/>
+     
+          <ListItem disablePadding>
+              <ListItemButton>
+                  <ListItemIcon>
+                  <AnalyticsIcon style={{color:'#00391c'}}/>
+                  </ListItemIcon>
+              <ListItemText primary="Sales Report" />
+              </ListItemButton>
+          </ListItem>
+          <Divider/>
+
+          <ListItem disablePadding>
+              <ListItemButton onClick={handleLogin}>
+                  <ListItemIcon>
+                  {userStatus ?<LogoutIcon style={{color:'#00391c'}}/>:<LoginIcon style={{color:'#00391c'}}/>}
+                  </ListItemIcon>
+              <ListItemText primary={userStatus? "Logout": "Login" } />
+
               </ListItemButton>
           </ListItem>
       </List>
@@ -189,14 +181,14 @@ export default function Header(props)
       <AppBar position="static" style={{background:'#fff'}}>
         <Toolbar style={{display:'flex', justifyContent:'space-between'}}>
           
-            <MenuOutlinedIcon onClick={handleDrawer} style={{fontSize:30,color:'#000'}}/>
+            <MenuOutlinedIcon onClick={handleDrawer} style={{fontSize:30,color:'#000', cursor:'pointer'}}/>
             <div >
               {searchBarComponent()}
             </div>
             <div style={{color:'#000', width: 70, display:'flex', justifyContent: 'space-between'}}>
             <div style={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
 
-              <PersonOutlineOutlinedIcon style={{fontSize:30,color:'#000'}} onClick={handleLogin}/>
+              <PersonOutlineOutlinedIcon style={{fontSize:30,color:'#000',cursor:'pointer'}} onMouseOver={showUserDetails} onClick={handleLogin}/>
               <div style={{fontSize:'1.7vw', fontWeight:'bolder',color:'#000'}}>{userData}</div>
               </div>
               <PhoneOutlinedIcon style={{fontSize:30,color:'#000'}}/>
@@ -217,6 +209,7 @@ export default function Header(props)
           placeholder="Search Products Here.."
           inputProps={{ 'aria-label': 'Search Products Here..' }}
           onChange={(e)=>setPattern(e.target.value)}
+          onKeyDown={(e)=>handleEnter(e)}
         />
         <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
           <SearchIcon onClick={handleFilterPage} />
@@ -226,18 +219,23 @@ export default function Header(props)
     );
   }
 
-    return(<Box sx={{ flexGrow: 1, position:'relative' }} onMouseLeave={hideCartDetails} >
-      <AppBar position="static" style={{background:'#fff'}}>
+  const handleLeave = () =>{
+    hideCartDetails()
+    hideUserDetails()
+  }
+
+    return(<Box sx={{ flexGrow: 1, position:'relative' }}  onMouseLeave={handleLeave} >
+      <AppBar position="static" style={{background:'#fff'}} >
         <Toolbar style={{display:'flex', justifyContent:'space-between'}}>
           
-            <img src={logo} style={{width:150}}/>
+            <img src={logo} style={{width:150, cursor:'pointer'}} onClick={()=>navigate('/home')}/>
             <div >
               {!matches?searchBarComponent():<div></div>}
             </div>
             <div style={{color:'#000', width: !matches? 130: 50, display:'flex', justifyContent: 'space-between'}}>
               
               {!matches?<div style={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
-              <PersonOutlineOutlinedIcon style={{fontSize:30,color:'#000',cursor:"pointer"}} onClick={handleLogin}/>
+              <PersonOutlineOutlinedIcon style={{fontSize:30,color:'#000',cursor:"pointer"}} onMouseOver={showUserDetails} onClick={handleLogin}/>
               <div style={{fontSize:'0.9vw', fontWeight:'bolder',color:'#000'}}>{userData}</div></div>:<div></div>}
               <Badge badgeContent={keys?.length} color="success">
               <ShoppingCartOutlinedIcon style={{fontSize:30,color:'#000',cursor:'pointer'}} onMouseOver={showCartDetails}/>
@@ -260,7 +258,8 @@ export default function Header(props)
             {drawerList()}
           </Drawer>
       </div>
-          <ShowCartProducts isOpen={isOpen} />
+          <ShowUser isOpenUser={isOpenUser} />
+          <ShowCartProducts isOpen={isOpen}/>
     </Box>
     )
 }

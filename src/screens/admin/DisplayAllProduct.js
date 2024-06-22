@@ -64,7 +64,7 @@ export default function DisplayAllProduct(){
     const fetchAllSubCategory = async(cid) =>{
         var result = await postData('subcategory/fetch_all_subcategory_by_categoryid',{categoryid:cid})
         if(result.status){
-            console.log(result.message)
+          
             setSubCategoryData(result.data)
         }
     }
@@ -72,7 +72,7 @@ export default function DisplayAllProduct(){
     const fetchAllBrand = async() =>{
         var result = await getData('brand/Display_All_Brand')
         if(result.status){
-            console.log(result.message)
+           
             setBrandData(result.data)
         }
     }

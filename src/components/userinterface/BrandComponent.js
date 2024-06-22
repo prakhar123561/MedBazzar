@@ -69,12 +69,12 @@ export default function BrandComponent(props){
 
     return(<div style={{width:"95%",position:'relative'}}>
     {matchesMd?<div style={{fontSize:17, fontWeight:'650', margin:'5px  0px '}}>{props?.title}</div>:<div style={{fontSize:26, fontWeight:'650', margin:'10px 0px 20px 0px'}}>{props?.title}</div>}
-       {matchesMd?<div></div>: <div style={{zIndex:1, position:'absolute', width:40, height:40, background:'#95a5a6', borderRadius:20, display:'flex', alignItems:'center', justifyContent:'center', opacity:0.4, top:'50%', left:'2%', cursor:'pointer'}}>
+       <div style={{zIndex:1, position:'absolute', width:matchesMd?25:40, height:matchesMd?25:40, background:'#95a5a6', borderRadius:20, display:'flex', alignItems:'center', justifyContent:'center', opacity:0.4, top:'50%', left:'2%', cursor:'pointer'}}>
             <ArrowBackIosOutlinedIcon onClick={handleForward}/>
-        </div>}
-        {matchesMd?<div></div>:  <div style={{zIndex:1, position:'absolute', width:40, height:40, background:'#95a5a6', borderRadius:20, display:'flex', alignItems:'center', justifyContent:'center', opacity:0.4, top:'50%', right:'2%', cursor:'pointer'}}>
+        </div>
+        <div style={{zIndex:1, position:'absolute', width:matchesMd?25:40, height:matchesMd?25:40, background:'#95a5a6', borderRadius:20, display:'flex', alignItems:'center', justifyContent:'center', opacity:0.4, top:'50%', right:'2%', cursor:'pointer'}}>
         <ArrowForwardIosOutlinedIcon onClick={handleBackward}/>
-        </div>}
+        </div>
         <Slider ref={sld} {...settings}>
             {brands.length? showSlide() : showBrandSlideShimmer()}
         </Slider>

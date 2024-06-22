@@ -7,20 +7,26 @@ import { useState, useEffect, createRef } from "react";
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 import logo from '../../assets/medbazzar1.png'
-
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Magnifier from "react-magnifier";
 
 export default function ProductPictures(props){
+    const sld = createRef()
+    var theme = useTheme()
+    const matchesMd = useMediaQuery(theme.breakpoints.down('md'))
 
     var settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 1,
+        slidesToShow: status?3:1,
         slidesToScroll: 1,
         autoplay: true
     };
 
     var [indexVal,setIndexVal] = useState(0)
+    var [status, setStatus] = useState(false)
     var productPics = props?.item
     var images = productPics.multi_picture.split(',')
 
@@ -32,7 +38,7 @@ export default function ProductPictures(props){
     const showSlide = () =>{
         return images.map((item,i)=>{
             return( <div style={{marginLeft:3,marginRight:3,width:"100%",display:'flex',justifyContent:'center',borderRadius:10}}>
-                <img src={`${serverUrl}/images/${item}`} 
+                {/* <img src={`${serverUrl}/images/${item}`} 
                 key={i}
             style={{
                 width:"60%",
@@ -41,7 +47,14 @@ export default function ProductPictures(props){
                 marginTop:10,
                 marginLeft:'auto',
                 marginRight:'auto'}}
-            />
+            /> */}
+            <Magnifier mgShape='square' mgWidth={150} mgHeight={150} src={`${serverUrl}/images/${item}`} width={500} style={{
+                width:"60%",
+                height:'auto',
+                borderRadius:10,
+                marginTop:10,
+                marginLeft:'auto',
+                marginRight:'auto'}} />
             <div style={{marginLeft:'70%',width:'50%'}}><img src={logo} style={{width:50}}/></div>
             </div>)
         })
@@ -63,19 +76,27 @@ export default function ProductPictures(props){
         })
     }
 
-    return (<div style={{marginRight:10}}>
-        <div style={{marginRight:'30%'}}>
-            <Grid container spacing={2} style={{maxWidth:'500px',marginLeft:20}}>
+    const handleForward = () =>{
+        sld.current.slickPrev()
+    }
+
+    const handleBackward = () =>{
+        sld.current.slickNext()
+    }
+
+    return (<div style={{ marginRight:'30%', width:'85%'}}>
+        
+            <Grid container spacing={2} style={{maxWidth:'700px',marginLeft:20}}>
                 <Grid item xs={12} style={{width:'60%'}}>
                             <Slider {...settings}>
                             {showSlide()}
                             </Slider>
                     
-                        <div style={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'row',width:'100%',marginTop:20}}>
+                       {matchesMd?<></> :<div style={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'row',width:'100%',marginTop:20}}>
                         {showPictures()}
-                        </div>
+                        </div>}
                 </Grid>
             </Grid>
-        </div></div>
+        </div>
     )
 }

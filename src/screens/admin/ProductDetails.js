@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import TitleComponent from "../../components/admin/TitleComponent";
 import { useStyles } from "./ProductDetailsCss";
@@ -400,6 +401,7 @@ export default function ProductDetails(){
                             value={weightType}
                             onChange={(event)=>setWeightType(event.target.value)}
                             onFocus={() => handleError('weightType',null)}>
+                                <MenuItem value="kg">Kg</MenuItem>
                                 <MenuItem value="mg">mg</MenuItem>
                                 <MenuItem value="gm">gm</MenuItem>
                                 <MenuItem value="ml">ml</MenuItem>

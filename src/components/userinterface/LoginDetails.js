@@ -38,13 +38,22 @@ export function LoginDetails(props){
                     title: "You are registered now...",
                     showConfirmButton: false,
                     timer: 1500,
-                    toast:true
+                    toast:true,
+                    position: 'top-end'
                   });
             dispatch({type:'ADD_USER',payload:[mobileno,body]})
             navigate('/cart')
             }
             else{
-                alert("Invalid OTP")
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "Invalid OTP",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast:true,
+                    position: 'top-end'
+                  });
             }
          }
           
@@ -88,7 +97,7 @@ export function LoginDetails(props){
             value={otp}
             onChange={setOtp}
             numInputs={4}
-            inputStyle={{ width:45, height:45, margin:10}}
+            inputStyle={{ width:matchesMd?30:45, height:matchesMd?30:45, marginRight:10}}
             renderSeparator={<span>-</span>}
             renderInput={(props) => <input {...props} />}
        />

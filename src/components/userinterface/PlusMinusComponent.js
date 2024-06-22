@@ -4,8 +4,14 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useState, useEffect } from "react";
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Swal from "sweetalert2";
 
 export default function PlusMinusComponent(props) {
+
+  const theme = useTheme()
+  const matchesMd = useMediaQuery(theme.breakpoints.down('md'))
 
     const [value, setValue] = useState(props.qty)
  useEffect(function () {
@@ -16,6 +22,24 @@ export default function PlusMinusComponent(props) {
     var v = value
     v = v + 1
     props.onChange(v)
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "bottom-end",
+      showConfirmButton: false,
+      timer: 3000,
+      background: '#00391c',
+      width: matchesMd?'50%':'20%',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+    Toast.fire({
+      icon: "success",
+      title: "Add to cart",
+      color: "#fff"
+    });
 
   }
   const handleMinus = () => {
@@ -36,13 +60,13 @@ export default function PlusMinusComponent(props) {
                 fontSize: 12, background: props.width ? '#00391c' : '', color: props.width ? "#fff" : '#00391c',
                 padding: props.width ? "12px 20px" : "2px 0px", width: props.width ? 125 : '40%', marginRight: 'auto'
             }}>ADD</Button>
-                : <Typography component="div" style={{ color: props.size ? '#00391c' : "#f2f2f2", background: props.size ? '#fff' : '#00391c', border: props.size ? '1px solid #00391c' : '', borderRadius: 5, width: props.width ? 140 : 85, display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', height: props.width ? 46 : 28.5 }}>
+                : <Typography component="div" style={{ color: props.size ? '#00391c' : "#f2f2f2", background: props.size ? '#fff' : '#00391c', border: props.size ? '1px solid #00391c' : '', borderRadius: 5, width: props.width ? 140 : matchesMd? 63: 85, display: 'flex', justifyContent: matchesMd?'center':'space-evenly', alignItems: 'center', height: props.width ? 46 : 28.5 }}>
                     <IconButton style={{ color: props.size ? '#00391c' : "#f2f2f2" }} onClick={handleMinus}>
-                        {props.size ? <DeleteOutlinedIcon sx={{ fontSize: 22 }} /> : <RemoveOutlinedIcon sx={{ fontSize: 22 }} />}
+                        {props.size ? <DeleteOutlinedIcon sx={{ fontSize: 22 }} /> : <RemoveOutlinedIcon sx={{ fontSize:matchesMd?14: 16 }} />}
                     </IconButton>
-                    <span style={{ cursor: 'default', marginLeft: 5, marginRight: 5, fontSize: 16 }}>{value}</span>
+                    <span style={{ cursor: 'default', marginLeft: 5, marginRight: 5, fontSize:matchesMd?14: 16 }}>{value}</span>
                     <IconButton style={{ color: props.size ? '#00391c' : "#f2f2f2" }} onClick={handlePlus}>
-                        <AddOutlinedIcon sx={{ fontSize: 22 }} />
+                        <AddOutlinedIcon sx={{ fontSize: matchesMd?14:16 }} />
                     </IconButton>
                 </Typography>}
         </Typography>)

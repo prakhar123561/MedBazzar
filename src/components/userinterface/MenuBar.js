@@ -1,8 +1,11 @@
 import { Box, Toolbar, AppBar, Button, Menu, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
 import { serverUrl, getData, postData } from "../../services/fetchNodeServices";
+import { useNavigate } from "react-router-dom";
 
 export default function MenuBar(){
+
+    const navigate = useNavigate()
 
     const [categoryData, setCategoryData] = useState([])
     const [subCategoryData, setSubCategoryData] = useState([])
@@ -19,7 +22,6 @@ export default function MenuBar(){
       const fetchAllSubCategory = async(cid) =>{
         var result = await postData('userinterface/fetch_all_subcategory_by_categoryid',{categoryid:cid})
         if(result.status){
-            console.log(result.message)
             setSubCategoryData(result.data)
         }
     }  
@@ -45,7 +47,7 @@ export default function MenuBar(){
 
     const showAllSubCategory = () =>{
         return subCategoryData.map((item)=>{
-            return <MenuItem style={{color:'#000'}} value={item.subcategoryid}>{item.subcategoryname}</MenuItem>
+            return <MenuItem style={{color:'#000'}} onClick={()=>navigate('/filter/null',{state:{subcategoryid:item.subcategoryid,categoryid:item.categoryid}})} value={item.subcategoryid}>{item.subcategoryname}</MenuItem>
         })
     }
 
@@ -56,7 +58,7 @@ export default function MenuBar(){
     return(
     <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" style={{background:'#fff'}}>
-          <Toolbar style={{display:'flex', justifyContent:'center'}}>
+          <Toolbar style={{display:'flex', justifyContent:'space-around' }}>
             {showAllCategory()}
             <Menu
             anchorEl={anchorEl}

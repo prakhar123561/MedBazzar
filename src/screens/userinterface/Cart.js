@@ -23,25 +23,33 @@ export default function Cart() {
     const [pageRefresh, setPageRefresh] = useState(false)
     const [status, setStatus] = useState(false)
     const [userAddress, setUserAddress] = useState({})
+    const [editStatus, setEditStatus] = useState(false)
 
     var products = useSelector(state => state.data)
     var userData = Object.values(useSelector(state => state.user))[0]
-    console.log("USER DATAAAA:", userData)
-    console.log("USER PRODUCT:", products)
+    
+
+    const fetchAllcategory = async() =>{
+        var result = await getData('userinterface/show_all_category')
+        if(result.status){
+            setCategoryList(result.data)
+        }
+    }
 
     const check_user_address = async () => {
 
         if (userData?.mobileno == undefined) { setStatus(false) }
         else {
-            var result = await postData('users/check_user_address', { mobileno: userData?.mobileno })
+            var result = await postData('users/check_user_address', { 'mobileno': userData?.mobileno })
             
             if (result.status == false) {
                 setStatus(true)
+                
             }
             else {
                 setStatus(false)
                 setUserAddress(result.data)
-
+               
             }
         }
     }
@@ -50,27 +58,22 @@ export default function Cart() {
         check_user_address()
     }, [userData?.mobileno, pageRefresh])
 
-    const fetchAllcategory = async () => {
-        var result = await getData('userinterface/show_all_category')
-        if (result.status) {
-            setCategoryList(result.data)
-        }
-    }
+   useEffect(function(){
+    fetchAllcategory()
+   },[])
 
-    useEffect(function () {
-        fetchAllcategory()
-
-    }, [])
+   
 
     return (<div >
         <Header pageRefresh={pageRefresh} setPageRefresh={setPageRefresh}/>
         {/* <div style={{maxWidth:'100vw',display:'flex',justifyContent:'center',alignItems:'center',marginTop:50,flexDirection:'column'}}> */}
+        
 
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 10, margin: 20, width: '90%' }}>
             <Grid container spacing={2} style={{ display: 'flex', flexDirection: matchesMd ? 'column' : 'row' }}>
                 <Grid item xs={12} md={8}>
                     <div style={{ margin: 10, display: 'flex' }} >
-                        <DeliveryAddress status={status}  userData={userData} userAddress={userAddress} setStatus={setStatus} pageRefresh={pageRefresh} setPageRefresh={setPageRefresh} />
+                        <DeliveryAddress editStatus={editStatus} setEditStatus={setEditStatus} status={status}   userData={userData} userAddress={userAddress} setStatus={setStatus} pageRefresh={pageRefresh} setPageRefresh={setPageRefresh} />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', margin: 10, width: '100%' }}>
                         <ShowCart products={products} pageRefresh={pageRefresh} setPageRefresh={setPageRefresh} />
@@ -91,7 +94,7 @@ export default function Cart() {
 
         </div>}
         {/* </div> */}
-        <AddAddress pageRefresh={pageRefresh} setPageRefresh={setPageRefresh} userData={userData} status={status} setStatus={setStatus} />
+        <AddAddress editStatus={editStatus} setEditStatus={setEditStatus} pageRefresh={pageRefresh} setPageRefresh={setPageRefresh} userData={userData} status={status} setStatus={setStatus} />
 
     </div>
     )

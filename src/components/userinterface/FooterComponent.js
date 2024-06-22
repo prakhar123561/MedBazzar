@@ -13,10 +13,11 @@ import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import { getData, postData } from "../../services/fetchNodeServices";
 import { EmailOutlined } from "@mui/icons-material";
 import { useTheme } from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function FooterComponent(props){
-
+    const navigate = useNavigate()
     const theme = useTheme()
     const matchesMd = useMediaQuery(theme.breakpoints.down('md'))
     const matchesSm = useMediaQuery(theme.breakpoints.down('sm'))
@@ -28,7 +29,6 @@ export default function FooterComponent(props){
     const fetchAllSubCategory = async() =>{
         var result = await getData('userinterface/display_all_subcategory')
         if(result.status){
-            console.log('RRRRRR:',result.message)
             setSubCategoryData(result.data)
         }
     } 
@@ -38,26 +38,25 @@ export default function FooterComponent(props){
         fetchAllSubCategory()
     },[])
 
-    // const cid= categoryData.map((item)=>[item.categoryid])
-    // console.log(cid)
 
     var category = props?.data
 
     const cname= category?.map((item)=>{
-            return [item.categoryname]
+            return [item.categoryname,item.categoryid]
         })    
 
-       
+       console.log('cname',cname)
     const showcategory= ()=>{
+        
         return cname.map((item)=>{
-            return <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}}>{item}</li>
+            return <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}} onClick={()=>navigate('/filter/null',{state:{categoryid:item[1],categoryname:item[0]}})}>{item[0]}</li>
         })
     }    
 
     const scname= subCategoryData.map((item)=>{
         return [item.subcategoryname]
     })
-    console.log('scname',scname)
+    
 
    
 const showsubcategory= ()=>{
@@ -94,8 +93,9 @@ const showsubcategory= ()=>{
             <Grid item xs={3} style={{display:'flex', justifyContent:'flex-start', paddingTop:20, paddingBottom:20,fontSize:16,fontWeight:600}}>
                 <div style={{display:'flex',justifyContent:'center',alignItems:'flex-start',flexDirection:'column'}}>
                     Medicines
-                    <ul style={{width:'100%'}}>
-                        
+                    <ul style={{width:'100%', padding:0}}>
+                        <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}}>Buy Medicines</li>
+                        <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}}>Upload Doctor's Note</li>
                     </ul>
                     
                 </div>
@@ -103,10 +103,15 @@ const showsubcategory= ()=>{
             </Grid>
 
             <Grid item xs={3} style={{display:'flex', justifyContent:'flex-start', paddingTop:20, paddingBottom:20,fontSize:16,fontWeight:600}}>
-                <div style={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+                <div style={{display:'flex',justifyContent:'center',alignItems:'flex-start',flexDirection:'column'}}>
                 Others
-                    <ul style={{width:'100%'}}>
-                        
+                    <ul style={{width:'100%', padding:0}}>
+                        <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}}>Offers</li>
+                        <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}}>Blogs</li>
+                        <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}}>Terms & Conditions</li>
+                        <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}}>Privacy Policy</li>
+                        <li style={{listStyle:'none',paddingTop:10,fontSize:14,fontWeight:"400",color:'rgb(208, 213, 221)',cursor:'pointer'}}>Store Locator</li>
+
                     </ul>
                     
                 </div>

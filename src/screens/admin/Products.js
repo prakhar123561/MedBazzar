@@ -38,7 +38,7 @@ export default function Products(){
     const fetchAllCategory = async() =>{
         var result = await getData('category/display_all_category')
         if(result.status){
-            console.log(result.message)
+            
             setCategoryData(result.data)
         }
     }
@@ -51,7 +51,7 @@ export default function Products(){
     const fetchAllSubCategory = async(cid) =>{
         var result = await postData('subcategory/fetch_all_subcategory_by_categoryid',{categoryid:cid})
         if(result.status){
-            console.log(result.message)
+            
             setSubCategoryData(result.data)
         }
     }
@@ -59,7 +59,7 @@ export default function Products(){
     const fetchAllBrand = async() =>{
         var result = await getData('brand/Display_All_Brand')
         if(result.status){
-            console.log(result.message)
+           
             setBrandData(result.data)
         }
     }

@@ -48,7 +48,7 @@ export default function DisplayAllProductDetail() {
     const handleError = (label, msg) => {
         setError((prev) => ({ ...prev, [label]: msg }))
     }
-    console.log('productdetaildata:', productDetailData)
+    
     const handlePicture = (event) => {
         if (Object.values(event.target.files).length >= 3) {
             try {
@@ -70,7 +70,7 @@ export default function DisplayAllProductDetail() {
     const fetchAllCategory = async () => {
         var result = await getData('category/display_all_category')
         if (result.status) {
-            console.log(result.message)
+          
             setCategoryData(result.data)
         }
     }
@@ -78,7 +78,7 @@ export default function DisplayAllProductDetail() {
     const fetchAllSubCategory = async (cid) => {
         var result = await postData('subcategory/fetch_all_subcategory_by_categoryid', { categoryid: cid })
         if (result.status) {
-            console.log(result.message)
+            
             setSubCategoryData(result.data)
         }
     }
@@ -112,22 +112,22 @@ export default function DisplayAllProductDetail() {
     useEffect(function () {
         fetchAllCategory()
     }, [])
-    console.log('dataaaa of category', categoryData)
+    
 
     useEffect(function () {
         fetchAllSubCategory()
     }, [])
-    console.log('dataaaa of subcategory', subCategoryData)
+    
 
     useEffect(function () {
         fetchAllBrand()
     }, [])
-    console.log('dataaaa of brand', brandData)
+
 
     useEffect(function () {
         fetchAllProduct()
     }, [])
-    console.log('dataaaa of product', productData)
+ 
 
     useEffect(function () {
         fetchAllConcern()
@@ -291,7 +291,7 @@ export default function DisplayAllProductDetail() {
         fetchAllProductDetail()
         setShowBtn(false)
     }
-    console.log('productdetaildata', productDetailData)
+
     const handleClose = () => {
         setOpen(false)
     }
@@ -579,7 +579,7 @@ export default function DisplayAllProductDetail() {
             </div>
         })
     }
-    console.log("tempPitcure", tempPicture)
+    
     function showImages() {
         return tempPicture.split(",").map((item, index) => {
             return <div style={{ margin: 2 }}>
